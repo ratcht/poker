@@ -1,13 +1,13 @@
 use std::fmt;
 use crate::types;
 
-struct Card {
+pub struct Card {
   value: types::CardValue,
   suit: types::CardSuit,
 }
 
 impl Card {
-  fn new(value: i8, suit: i8) -> Result<Self, types::TypeError> {
+  pub fn new(value: i8, suit: i8) -> Result<Self, types::error::TypeError> {
     Ok(Card {
       value: types::CardValue::new(value)?, // propagate error if invalid
       suit: types::CardSuit::new(suit)?,
