@@ -1,7 +1,7 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
 
-#include "game/cards/deck.hpp"
+#include "game/card/deck.hpp"
 #include "game/engine/player.hpp"
 
 class Table {

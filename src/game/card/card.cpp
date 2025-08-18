@@ -1,4 +1,4 @@
-#include "game/card.hpp"
+#include "game/card/card.hpp"
 #include "game/constants.hpp"
 
 

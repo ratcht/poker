@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "game/deck.hpp"
+#include "game/card/deck.hpp"
 
 
 int main(int argc, char* argv[]) {

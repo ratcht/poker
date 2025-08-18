@@ -1,4 +1,4 @@
-#include "game/deck.hpp"
+#include "game/card/deck.hpp"
 #include "game/constants.hpp"
 
 #include <algorithm>  // for std::shuffle
