@@ -5,6 +5,8 @@
 #include "game/engine/player.hpp"
 
 class Table {
+  friend class StateCommand;
+
   Deck* deck;
   Card board[5];
   Player* players;

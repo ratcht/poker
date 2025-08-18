@@ -1,44 +1,33 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "game/cards/deck.hpp"
+#include "game/engine/table.hpp"
+#include "game/engine/state.hpp"
 
 class Game {
   friend class StateCommand;
 
-
+  Table *table;
+  State state;
 
   Game(int num_players);
   ~Game();
 
-// protected api
 protected:
-  Card draw_card_() {
-    return deck->draw_card();
+  void set_state(State new_state) {
+    state = new_state;
   }
 
-  void update_board_(Card card, int position) {
-    if (position < 0 || position > 4) throw std::invalid_argument("Invalid board position");
-    board[position] = card;
+  void reset_state() {
+    state = State::WAITING;
   }
 
 public:
-  int get_num_players() {
-    return num_players;
+  State get_state() {
+    return state;
   }
 
-  int get_stage() {
-    return stage;
-  }
-
-  void next_stage() {
-    stage++;
-  }
-
-  Card get_from_board(int position) {
-    if (position < 0 || position > 4) throw std::invalid_argument("Invalid board position");
-    return board[position];
-  }
+  int submit_action(PlayerAction *action); // validate action
 };
 
 #endif // GAME_HPP

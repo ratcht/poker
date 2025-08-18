@@ -1,10 +1,11 @@
 #ifndef STREET_HPP
 #define STREET_HPP
 
-#include "game/engine/engine.hpp"
+#include "game/engine/table.hpp"
 
 enum State {
   WAITING=-1,
+  PREFLOP,
   FLOP,
   TURN,
   RIVER,
@@ -16,52 +17,52 @@ class StateCommand {
 
 // api
 protected:
-Card draw_card_(Game* game) { return game->draw_card_(); }
-void update_board_(Game* game, Card card, int position) { game->update_board_(card, position); }
+Card draw_card_(Table* table) { return table->draw_card_(); }
+void update_board_(Table* table, Card card, int position) { table->update_board_(card, position); }
 
 public:
   virtual void execute();
 };
 
 class FlopCommand : StateCommand {
-  Game* game;
+  Table* table;
 public:
-  FlopCommand(Game* game) : game(game) {}
+  FlopCommand(Table* table) : table(table) {}
   void execute() override {
     // burn 3 cards
     for (int i = 0; i < 3; ++i) {
-      Card _ = draw_card_(game);
+      Card _ = draw_card_(table);
     }
 
     for (int i = 0; i < 3; ++i) {
-      Card drawn = draw_card_(game);
-      update_board_(game, drawn, i);
+      Card drawn = draw_card_(table);
+      update_board_(table, drawn, i);
     }
   }
 };
 
 class TurnCommand : StateCommand {
-  Game* game;
+  Table* table;
 public:
-  TurnCommand(Game* game) : game(game) {}
+  TurnCommand(Table* table) : table(table) {}
   void execute() override {
-    Card _ = draw_card_(game); // burn
+    Card _ = draw_card_(table); // burn
 
-    Card drawn = draw_card_(game);
-    update_board_(game, drawn, 3);
+    Card drawn = draw_card_(table);
+    update_board_(table, drawn, 3);
   }
 };
 
 
 class RiverCommand : StateCommand {
-  Game* game;
+  Table* table;
 public:
-  RiverCommand(Game* game) : game(game) {}
+  RiverCommand(Table* table) : table(table) {}
   void execute() override {
-    Card _ = draw_card_(game); // burn
+    Card _ = draw_card_(table); // burn
 
-    Card drawn = draw_card_(game);
-    update_board_(game, drawn, 4);
+    Card drawn = draw_card_(table);
+    update_board_(table, drawn, 4);
   }
 };
 
