@@ -1,7 +1,7 @@
 #ifndef CARD_HPP
 #define CARD_HPP
 
-#include "constants.hpp"
+#include "game/constants.hpp"
 
 #include <cstdint>
 #include <string>
@@ -22,6 +22,7 @@ public:
     return suit;
   }
 
+  std::string to_pretty_string() const;
   std::string to_string() const;
 };
 

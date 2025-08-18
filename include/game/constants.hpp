@@ -4,12 +4,6 @@
 #include <cstdint>
 #include <string>
 
-
-/* game stage flags */
-#define FLOP 0
-#define TURN 1
-#define RIVER 2
-
 /* deck constants */
 #define NUM_CARDS_IN_DECK 52
 #define NUM_SUITS 4
@@ -20,7 +14,8 @@
 #define HEARTS 2
 #define DIAMONDS 3
 const uint8_t suits[4] = {CLUBS, SPADES, HEARTS, DIAMONDS};
-const std::string suits_str[4] = {"♣", "♠", "♥", "♦"};
+const std::string suits_symbol[4] = {"♣", "♠", "♥", "♦"};
+const std::string suits_letter[4] = {"C", "S", "H", "D"};
 
 
 #endif

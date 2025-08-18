@@ -5,12 +5,6 @@
 #include <random>     // for std::mt19937, std::random_device
 
 
-/* card */
-std::string Card::to_string() const{
-  std::string display_value = std::string(1, "23456789TJQKA"[this->value]);
-  std::string display_suit = suits_str[this->suit];
-  return display_value + display_suit;
-}
 
 Deck::Deck() : cards_remaining(52) {
   for (uint8_t i = 0; i < 52; ++i) {

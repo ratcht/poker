@@ -10,8 +10,14 @@ Card::Card(uint8_t v, uint8_t s) {
   suit = s;
 }
 
+std::string Card::to_pretty_string() const{
+  std::string display_value = std::string(1, "23456789TJQKA"[this->value]);
+  std::string display_suit = suits_symbol[this->suit];
+  return display_value + display_suit;
+}
+
 std::string Card::to_string() const{
   std::string display_value = std::string(1, "23456789TJQKA"[this->value]);
-  std::string display_suit = suits_str[this->suit];
+  std::string display_suit = suits_letter[this->suit];
   return display_value + display_suit;
 }
