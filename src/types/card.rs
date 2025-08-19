@@ -2,13 +2,13 @@ use super::error::TypeError;
 
 
 //============ CardValue ============
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]  // Add Copy
 pub struct CardValue(i8);
 
 impl CardValue {
   pub fn new(value: i8) -> Result<Self, TypeError> {
     if value < 2 || value > 14 {
-      return Err(TypeError("card value out of bounds".to_string()));
+      return Err(TypeError(format!("card value out of bounds: {}", value)));
     }
     Ok(CardValue(value))
   }
@@ -35,13 +35,13 @@ impl std::fmt::Display for CardValue {
 }
 
 //============ CardSuit ============
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]  // Add Copy
 pub struct CardSuit(i8);
 
 impl CardSuit {
   pub fn new(value: i8) -> Result<Self, TypeError> {
     if value < 0 || value > 3 {
-      return Err(TypeError("card suit out of bounds".to_string()));
+      return Err(TypeError(format!("card suit out of bounds: {}", value)));
     }
     Ok(CardSuit(value))
   }

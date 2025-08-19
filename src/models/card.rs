@@ -1,7 +1,7 @@
 use std::fmt;
 use crate::types;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Copy)]
 pub struct Card {
   value: types::CardValue,
   suit: types::CardSuit,

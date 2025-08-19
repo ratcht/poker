@@ -4,7 +4,7 @@ use super::card::Card;
 use crate::types;
 
 pub struct Deck {
-  cards: [u8; 52], // unshuffled is 0-12 for CLUBS, SPADES, HEARTS, DIAMONDS in that order
+  cards: [u8; 52], // unshuffled is 0-12 for CLUBS, SPADES, HEARTS, DIAMONDS in that order, values go from 2-A (where A = 14)
   cards_remaining: u8,
 }
 

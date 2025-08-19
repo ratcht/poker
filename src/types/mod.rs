@@ -3,4 +3,4 @@ pub mod error;
 
 
 pub use card::{CardSuit, CardValue};
-pub use error::{TypeError, DeckError}; // re-export
+pub use error::{TypeError, DeckError, TableError, StateMachineError}; // re-export

@@ -24,3 +24,29 @@ impl fmt::Display for DeckError {
 }
 
 impl std::error::Error for DeckError {}
+
+
+// TableError
+#[derive(Debug, Clone)]
+pub struct TableError(pub String);
+
+impl fmt::Display for TableError {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    write!(f, "TableError: {}", self.0)
+  }
+}
+
+impl std::error::Error for TableError {}
+
+
+// StateMachineError
+#[derive(Debug, Clone)]
+pub struct StateMachineError(pub String);
+
+impl fmt::Display for StateMachineError {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    write!(f, "StateMachineError: {}", self.0)
+  }
+}
+
+impl std::error::Error for StateMachineError {}
