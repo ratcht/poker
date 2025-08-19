@@ -34,7 +34,7 @@ impl Deck {
     let value = (card_i % 13) as i8;
     let suit = (card_i / 13) as i8;
 
-    Card::new(value + 1, suit).map_err(|type_err| {
+    Card::new(value + 2, suit).map_err(|type_err| {
       types::DeckError(format!("Failed to create card: {}", type_err))
     })
   }
@@ -65,9 +65,18 @@ mod tests {
   #[test]
   fn draw_card_success() {
     let mut deck = Deck::new();
+
+    // test first card
     let result = deck.draw_card();
     assert!(result.is_ok());
     assert_eq!(deck.get_cards_remaining(), 51);
+    let card = result.unwrap();
+    assert_eq!(card.to_string(), "A♦");
+
+    // test the 2nd card is kd
+    let result = deck.draw_card();
+    assert!(result.is_ok());
+    assert_eq!(deck.get_cards_remaining(), 50);
     let card = result.unwrap();
     assert_eq!(card.to_string(), "K♦");
   }
