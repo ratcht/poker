@@ -1,4 +1,1 @@
-.clangd
-compile_flags.txt
-bin/
-objs/
+/target
