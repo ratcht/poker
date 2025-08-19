@@ -34,7 +34,7 @@ impl Deck {
     let value = (card_i % 13) as i8;
     let suit = (card_i / 13) as i8;
 
-    Card::new(value, suit).map_err(|type_err| {
+    Card::new(value + 1, suit).map_err(|type_err| {
       types::DeckError(format!("Failed to create card: {}", type_err))
     })
   }
@@ -49,5 +49,56 @@ impl Deck {
       self.cards[i] = i as u8;
     }
     self.cards_remaining = 52;
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn new_deck_has_52_cards() {
+    let deck = Deck::new();
+    assert_eq!(deck.get_cards_remaining(), 52);
+  }
+
+  #[test]
+  fn draw_card_success() {
+    let mut deck = Deck::new();
+    let result = deck.draw_card();
+    assert!(result.is_ok());
+    assert_eq!(deck.get_cards_remaining(), 51);
+    let card = result.unwrap();
+    assert_eq!(card.to_string(), "K♦");
+  }
+
+  #[test]
+  fn draw_from_empty_deck_fails() {
+    let mut deck = Deck::new();
+
+    // Empty the deck
+    for _ in 0..52 {
+      deck.draw_card().unwrap();
+    }
+
+    let result = deck.draw_card();
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn reset_works() {
+    let mut deck = Deck::new();
+    deck.draw_card().unwrap();
+    deck.draw_card().unwrap();
+
+    deck.reset();
+    assert_eq!(deck.get_cards_remaining(), 52);
+  }
+
+  #[test]
+  fn shuffle_preserves_card_count() {
+    let mut deck = Deck::new();
+    deck.shuffle();
+    assert_eq!(deck.get_cards_remaining(), 52);
   }
 }

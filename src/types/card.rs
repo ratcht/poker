@@ -2,6 +2,7 @@ use super::error;
 
 
 //============ card::Value ============
+#[derive(Debug)]
 pub struct CardValue(i8);
 
 impl CardValue {
@@ -17,8 +18,24 @@ impl CardValue {
   }
 }
 
+impl std::fmt::Display for CardValue {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    let s = match self.0 {
+      1 => "A",
+      2 => "2", 3 => "3", 4 => "4", 5 => "5",
+      6 => "6", 7 => "7", 8 => "8", 9 => "9",
+      10 => "T",
+      11 => "J",
+      12 => "Q",
+      13 => "K",
+      _ => unreachable!(),
+    };
+    write!(f, "{}", s)
+  }
+}
 
 //============ card::Suit ============
+#[derive(Debug)]
 pub struct CardSuit(i8);
 
 impl CardSuit {
@@ -51,5 +68,11 @@ impl CardSuit {
       3 => "D",
       _ => "SuitError"
     }
+  }
+}
+
+impl std::fmt::Display for CardSuit {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", self.symbol())
   }
 }

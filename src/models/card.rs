@@ -1,6 +1,7 @@
 use std::fmt;
 use crate::types;
 
+#[derive(Debug)]
 pub struct Card {
   value: types::CardValue,
   suit: types::CardSuit,
@@ -17,6 +18,6 @@ impl Card {
 
 impl fmt::Display for Card {
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    write!(f, "{}{}", self.value.value(), self.suit.symbol())
+    write!(f, "{}{}", self.value, self.suit)
   }
 }
