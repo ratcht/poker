@@ -4,14 +4,14 @@
 #include "game/engine/table.hpp"
 #include "game/engine/state.hpp"
 
-class Game {
+class Engine {
   friend class StateCommand;
 
   Table *table;
   State state;
 
-  Game(int num_players);
-  ~Game();
+  Engine(int num_players);
+  ~Engine();
 
 protected:
   void set_state(State new_state) {
@@ -28,6 +28,8 @@ public:
   }
 
   int submit_action(PlayerAction *action); // validate action
+  int undo_last_action();
+
 };
 
 #endif // GAME_HPP
