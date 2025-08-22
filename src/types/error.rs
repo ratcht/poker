@@ -1,5 +1,18 @@
 use std::fmt;
 
+// LogicError
+#[derive(Debug, Clone)]
+pub struct LogicError(pub String);
+
+impl fmt::Display for LogicError {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    write!(f, "LogicError: {}", self.0)
+  }
+}
+
+impl std::error::Error for LogicError {}
+
+
 // TypeError
 #[derive(Debug, Clone)]
 pub struct TypeError(pub String);
