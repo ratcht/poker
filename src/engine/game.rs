@@ -1,5 +1,5 @@
 
 
-struct Game {
+pub struct Game {
 
 }

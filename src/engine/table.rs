@@ -1,28 +1,34 @@
 use crate::models::{deck::Deck, card::Card, player::Player};
 use crate::types;
 
+pub struct TableInfo {
+  buy_in: usize,
+  max_players: usize,
+}
 pub struct Table {
+  info: TableInfo,
   deck: Deck,
   board: [Option<Card>; 5],
-  players: Vec<Player>,
+  seats: Vec<Option<Player>>,
   button: usize,
 }
 
 impl Table {
-  pub fn new(num_players: usize) -> Result<Self, types::TableError> {
-    if num_players < 2 || num_players > 10 {
+  pub fn new(max_players: usize, buy_in: usize) -> Result<Self, types::TableError> {
+    if max_players < 2 || max_players > 10 {
       return Err(types::TableError("Invalid number of players".to_string()));
     }
 
-    let mut players = Vec::with_capacity(num_players);
-    for i in 0..num_players {
-      players.push(Player::new(i));
-    }
+    let table_info = TableInfo{
+      buy_in,
+      max_players,
+    };
 
     Ok(Table {
+      info: table_info,
       deck: Deck::new(),
       board: [None; 5],
-      players,
+      seats: Vec::with_capacity(max_players),
       button: 0,
     })
   }
@@ -34,7 +40,25 @@ impl Table {
   }
 
   pub fn move_button(&mut self) {
-    self.button = (self.button + 1) % self.players.len();
+    // loop until we find a valid seat
+    // if no one to move button to, does nothing
+    for _ in 0..self.seats.len() {
+      self.button = (self.button + 1) % self.seats.len();
+      if self.seats.get(self.button).is_some() {
+        break;
+      }
+    }
+
+  }
+
+  pub fn seat_player(&mut self, player: Player) -> Result<(), types::TableError> {
+    for i in 0..self.seats.len() {
+      if self.seats.get(i).is_none() {
+        self.seats[i] = Some(player);
+        return Ok(());
+      }
+    }
+    Err(types::TableError("Table is full!".to_string()))
   }
 
   pub fn draw_card(&mut self) -> Result<Card, types::DeckError> {
@@ -62,7 +86,7 @@ impl Table {
 
 impl std::fmt::Display for Table {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    writeln!(f, "Table with {} players:", self.players.len())?;
+    writeln!(f, "Table with {} seats:", self.seats.len())?;
     writeln!(f, "Button position: {}", self.button)?;
 
     write!(f, "Board: ")?;
@@ -88,20 +112,20 @@ mod tests {
 
   #[test]
   fn new_table_valid_players() {
-    let table = Table::new(6).unwrap();
-    assert_eq!(table.players.len(), 6);
+    let table = Table::new(6, 100).unwrap();
+    assert_eq!(table.seats.capacity(), 6);
     assert_eq!(table.button, 0);
   }
 
   #[test]
   fn new_table_invalid_players() {
-    assert!(Table::new(1).is_err());
-    assert!(Table::new(11).is_err());
+    assert!(Table::new(1, 100).is_err());
+    assert!(Table::new(11, 100).is_err());
   }
 
   #[test]
   fn board_operations() {
-    let mut table = Table::new(2).unwrap();
+    let mut table = Table::new(2, 100).unwrap();
 
     // Initially empty
     assert_eq!(table.get_from_board(0).unwrap(), None);
@@ -118,7 +142,10 @@ mod tests {
 
   #[test]
   fn button_movement() {
-    let mut table = Table::new(3).unwrap();
+    let mut table = Table::new(3, 100).unwrap();
+    for _ in 0..3 {
+      assert!(table.seat_player(Player::new_default()).is_ok());
+    }
     assert_eq!(table.button, 0);
 
     table.move_button();
@@ -132,8 +159,20 @@ mod tests {
   }
 
   #[test]
+  fn button_movement_empty_table() {
+    let mut table = Table::new(4, 100).unwrap();
+    assert!(table.seat_player(Player::new_default()).is_ok());
+
+    assert_eq!(table.button, 0);
+
+    table.move_button();
+    assert_eq!(table.button, 0);
+
+  }
+
+  #[test]
   fn reset_clears_board() {
-    let mut table = Table::new(2).unwrap();
+    let mut table = Table::new(2, 100).unwrap();
 
     // Place a card
     let card = table.draw_card().unwrap();
@@ -148,7 +187,7 @@ mod tests {
 
   #[test]
   fn cannot_overwrite_board_position() {
-    let mut table = Table::new(2).unwrap();
+    let mut table = Table::new(2, 100).unwrap();
 
     let card1 = table.draw_card().unwrap();
     let card2 = table.draw_card().unwrap();
